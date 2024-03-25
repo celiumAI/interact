@@ -9,7 +9,7 @@ import ReactFlow, {
 } from 'reactflow';
  
 import 'reactflow/dist/style.css';
-import TextUpdaterNode from './TextUpdaterNode';
+import LLMGenerate from './LLMGenerate';
  
 const initialNodes = [
   { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
@@ -17,7 +17,7 @@ const initialNodes = [
   { id: 'node-1', type: 'textUpdater', position: { x: 200, y: 100 }, data: { value: 123 } },
 ];
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-const nodeTypes = { textUpdater: TextUpdaterNode }
+const nodeTypes = { textUpdater: LLMGenerate }
  
 export default function FlowGraph() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);

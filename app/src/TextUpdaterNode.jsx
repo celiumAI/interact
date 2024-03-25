@@ -8,7 +8,7 @@ function TextUpdaterNode({ data, isConnectable }) {
   return (
     <div className="text-updater-node">
       <Handle type="target" position={Position.Top} isConnectable={isConnectable} />
-      <LLMGenerate></LLMGenerate>
+      <LLMGenerate/>
       <Handle
         type="source"
         position={Position.Bottom}

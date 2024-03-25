@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "./LLMGenerate.css"
 
 function LLMGenerate() {
   const [inputText, setInputText] = useState('');
@@ -6,7 +7,7 @@ function LLMGenerate() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setResponses(''); // Clear previous responses
+    setResponses('');
 
     const reader = await fetch('http://localhost:11434/api/generate', {
       method: 'POST',
@@ -45,8 +46,8 @@ function LLMGenerate() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="generateContainer">
+      <form onSubmit={handleSubmit} className="generateForm">
         <input
           type="text"
           value={inputText}
@@ -55,8 +56,10 @@ function LLMGenerate() {
         />
         <button type="submit">Submit</button>
       </form>
-      <p>Responses:</p>
-      <p>{responses}</p>
+      <div className="responseContainer">
+        <p>Responses:</p>
+        <p>{responses}</p>
+      </div>
     </div>
   );
 }
