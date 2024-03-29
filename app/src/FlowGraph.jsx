@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -14,6 +14,7 @@ const initialNodes = [
   { id: 'node-1', type: 'textUpdater', position: { x: 200, y: 100 }, data: { communicate: null } },
   { id: 'node-2', type: 'textUpdater', position: { x: 400, y: 100 }, data: { communicate: null } },
 ];
+
 const initialEdges = [];
 
 const nodeTypes = {
@@ -23,6 +24,19 @@ const nodeTypes = {
 export default function FlowGraph() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodeCount, setNodeCount] = useState(2);
+
+  const addNode = useCallback(() => {
+    const newNodeId = `node-${nodeCount + 1}`;
+    const newNode = {
+      id: newNodeId,
+      type: 'textUpdater',
+      position: { x: (nodeCount + 1) * 200, y: 100 },
+      data: { communicate: null },
+    };
+    setNodes((nds) => nds.concat(newNode));
+    setNodeCount((count) => count + 1);
+  }, [nodeCount, setNodes]);
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -55,6 +69,7 @@ export default function FlowGraph() {
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
+      <button onClick={addNode} style={{ position: 'absolute', zIndex: 100 }}>Add Node</button>
       <ReactFlow
         nodes={nodes}
         edges={edges}
