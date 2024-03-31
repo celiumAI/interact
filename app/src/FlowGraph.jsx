@@ -11,8 +11,8 @@ import 'reactflow/dist/style.css';
 import TextUpdaterNode from './TextUpdaterNode';
 
 const initialNodes = [
-  { id: 'node-1', type: 'textUpdater', position: { x: 200, y: 100 }, data: { communicate: null } },
-  { id: 'node-2', type: 'textUpdater', position: { x: 400, y: 100 }, data: { communicate: null } },
+  { id: 'node-1', type: 'textUpdater', position: { x: 200, y: 100 }, data: {} },
+  { id: 'node-2', type: 'textUpdater', position: { x: 400, y: 100 }, data: {} },
 ];
 
 const initialEdges = [];
@@ -31,7 +31,7 @@ export default function FlowGraph() {
       id: newNodeId,
       type: 'textUpdater',
       position: { x: 100, y: 100 },
-      data: { communicate: handleDataChange },
+      data: {},
     };
     setNodes((nds) => nds.concat(newNode));
   }, [setNodes]);
@@ -40,30 +40,6 @@ export default function FlowGraph() {
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges],
   );
-
-  const handleDataChange = useCallback((targetNodeId, newData) => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === targetNodeId) {
-          // we can do magic here
-          return { ...node, data: newData };
-        }
-        return node;
-      })
-    );
-  }, []);
-
-  useEffect(() => {
-    setNodes(nds =>
-      nds.map(node => ({
-        ...node,
-        data: {
-          ...node.data,
-          communicate: handleDataChange,
-        },
-      }))
-    );
-  }, [handleDataChange]);
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>

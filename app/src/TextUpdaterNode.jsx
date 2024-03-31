@@ -1,20 +1,45 @@
 import { useCallback, useState, useEffect } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, useReactFlow } from 'reactflow';
 
 const handleStyle = { left: 10 };
 
-function TextUpdaterNode({ data, isConnectable }) {
-  const communicate = data.communicate;
+function TextUpdaterNode(props) {
   const [inputString, setInputString] = useState("");
   const [displayString, setDisplayString] = useState("");
+  const reactFlow = useReactFlow();
 
   useEffect(() => {
-    setDisplayString(data?.text);
-  }, [data?.text])
+    setDisplayString(props.data?.label);
+  }, [props]);
 
-  const handleSubmit = useCallback(() => {
-    communicate('node-2', { text: inputString });
-  }, [inputString, communicate]);
+  const handleSubmit = () => {
+    const allEdges = reactFlow.getEdges();
+    const outgoingEdges = [];
+    for (let edge of allEdges) {
+      if (edge.source === props.id) {
+        outgoingEdges.push(edge);
+      }
+    }
+
+    const currentNodes = reactFlow.getNodes();
+
+    const updatedNodes = currentNodes.map(node => {
+      const isTargetNode = outgoingEdges.some(edge => edge.target === node.id);
+      if (isTargetNode) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            label: inputString,
+          },
+        };
+      }
+      return node;
+    });
+
+    console.log(updatedNodes)
+    reactFlow.setNodes(updatedNodes);
+  };
 
   return (
     <div>
