@@ -24,19 +24,17 @@ const nodeTypes = {
 export default function FlowGraph() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [nodeCount, setNodeCount] = useState(2);
 
   const addNode = useCallback(() => {
-    const newNodeId = `node-${nodeCount + 1}`;
+    const newNodeId = Date.now().valueOf().toString()
     const newNode = {
       id: newNodeId,
       type: 'textUpdater',
-      position: { x: (nodeCount + 1) * 200, y: 100 },
-      data: { communicate: null },
+      position: { x: 100, y: 100 },
+      data: { communicate: handleDataChange },
     };
     setNodes((nds) => nds.concat(newNode));
-    setNodeCount((count) => count + 1);
-  }, [nodeCount, setNodes]);
+  }, [setNodes]);
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
