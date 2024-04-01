@@ -29,7 +29,7 @@ export default function FlowGraph() {
     const newNodeId = Date.now().valueOf().toString()
     const newNode = {
       id: newNodeId,
-      type: 'textUpdater',
+      type: 'base',
       position: { x: 100, y: 100 },
       data: {},
     };
@@ -38,19 +38,6 @@ export default function FlowGraph() {
 
   const onConnect = useCallback(
     (params) => {
-      const updatedNodes = nodes.map(node => {
-        if (node.id == params.source || node.id == params.target) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              needsUpdate: true,
-            },
-          };
-        }
-        return node;
-      });
-      setNodes(updatedNodes);
       return setEdges((eds) => {
         return addEdge(params, eds)
       })
