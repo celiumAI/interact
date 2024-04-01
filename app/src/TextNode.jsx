@@ -1,15 +1,35 @@
 import { useCallback, useState, useEffect } from 'react';
 import { Handle, Position, useReactFlow } from 'reactflow';
 
-const handleStyle = { left: 10 };
-
 function TextUpdaterNode(props) {
   const [inputString, setInputString] = useState("");
-  const [displayString, setDisplayString] = useState("");
+  const [inputValues, setInputValues] = useState([]);
   const reactFlow = useReactFlow();
 
   useEffect(() => {
-    setDisplayString(props.data?.label);
+    if (props.data?.inputsChanged) {
+      const allEdges = reactFlow.getEdges();
+      const incomingEdges = [];
+
+      for (let edge of allEdges) {
+        if (edge.target === props.id) {
+          incomingEdges.push(edge);
+        }
+      }
+
+      const currentNodes = reactFlow.getNodes();
+      const incomingNodes = incomingEdges.map(edge => {
+        return currentNodes.find(node => node.id === edge.source);
+      });
+
+      console.log(incomingNodes)
+      const values = []
+      incomingNodes.forEach(node => {
+        values.push(node.data.value)
+      })
+
+      setInputValues(values);
+    }
   }, [props]);
 
   const handleSubmit = () => {
@@ -30,22 +50,26 @@ function TextUpdaterNode(props) {
           ...node,
           data: {
             ...node.data,
-            label: inputString,
+            inputsChanged: true,
+          },
+        };
+      } else if (node.id == props.id) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            value: inputString
           },
         };
       }
       return node;
     });
-
-    console.log(updatedNodes)
     reactFlow.setNodes(updatedNodes);
   };
 
   return (
     <div>
-      <Handle type="target" position={Position.Top} style={handleStyle} />
       <div>
-        <p>Display Text: {displayString}</p>
         <form onSubmit={e => {
           e.preventDefault();
           handleSubmit();

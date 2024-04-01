@@ -8,17 +8,17 @@ import ReactFlow, {
   addEdge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import TextUpdaterNode from './TextUpdaterNode';
+import TextNode from './TextNode';
 
 const initialNodes = [
-  { id: 'node-1', type: 'textUpdater', position: { x: 200, y: 100 }, data: {} },
-  { id: 'node-2', type: 'textUpdater', position: { x: 400, y: 100 }, data: {} },
+  { id: 'node-1', type: 'textNode', position: { x: 200, y: 100 }, data: { value: "" } },
+  { id: 'node-2', type: 'textNode', position: { x: 400, y: 100 }, data: { value: "" } },
 ];
 
 const initialEdges = [];
 
 const nodeTypes = {
-  textUpdater: TextUpdaterNode,
+  textNode: TextNode,
 }
 
 export default function FlowGraph() {
