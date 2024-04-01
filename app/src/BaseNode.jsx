@@ -31,7 +31,7 @@ function BaseNode(props) {
   const reactFlow = useReactFlow();
 
   function updateInfoText() {
-    setCollapsibleObject({"node": props, "incomingEdges": incomingEdges, "outgoingEdges": outgoingEdges})
+    setCollapsibleObject({ "node": props, "incomingEdges": incomingEdges, "outgoingEdges": outgoingEdges })
   }
 
   useEffect(() => {
@@ -107,7 +107,7 @@ function BaseNode(props) {
   };
 
   return (
-    <div style={{ border: "1px solid black", padding: "8px", maxWidth: "400px", maxHeight: "600px"}}>
+    <div style={{ border: "1px solid black", padding: "8px" }}>
       <Handle type="target" position={Position.Top} />
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Bottom} />
