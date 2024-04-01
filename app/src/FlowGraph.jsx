@@ -8,17 +8,17 @@ import ReactFlow, {
   addEdge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import TextNode from './TextNode';
+import BaseNode from './BaseNode';
 
 const initialNodes = [
-  { id: 'node-1', type: 'textNode', position: { x: 200, y: 100 }, data: { value: "" } },
-  { id: 'node-2', type: 'textNode', position: { x: 400, y: 100 }, data: { value: "" } },
+  { id: 'node-1', type: 'base', position: { x: 200, y: 100 }, data: { value: "" } },
+  { id: 'node-2', type: 'base', position: { x: 400, y: 100 }, data: { value: "" } },
 ];
 
 const initialEdges = [];
 
 const nodeTypes = {
-  textNode: TextNode,
+  base: BaseNode,
 }
 
 export default function FlowGraph() {
@@ -37,9 +37,28 @@ export default function FlowGraph() {
   }, [setNodes]);
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) => {
+      const updatedNodes = nodes.map(node => {
+        if (node.id == params.source || node.id == params.target) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              needsUpdate: true,
+            },
+          };
+        }
+        return node;
+      });
+      setNodes(updatedNodes);
+      return setEdges((eds) => {
+        return addEdge(params, eds)
+      })
+    },
     [setEdges],
   );
+
+
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
