@@ -31,7 +31,7 @@ export default function FlowGraph() {
       id: newNodeId,
       type: 'base',
       position: { x: 100, y: 100 },
-      data: {},
+      data: { value: "" },
     };
     setNodes((nds) => nds.concat(newNode));
   }, [setNodes]);
